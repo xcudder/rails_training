@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Company Form</title>
+    <title>Book Form</title>
   </head>
   <body>
-    <h1>Company Form</h1>
-    <% if(@company) %>
-        <%= form_with model: @company do |form| %>
+    <h1>Book Form</h1>
+    <% if(@book) %>
+        <%= form_with model: @book do |form| %>
             <%= form.text_field :name %>
             <%= form.submit %>
         <% end %>
     <% else %>
-        <%= form_with model: Company.new do |form| %>
+        <%= form_with model: Book.new do |form| %>
             <%= form.text_field :name %>
             <%= form.submit %>
         <% end %>

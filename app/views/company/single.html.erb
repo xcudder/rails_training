@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Company</title>
+        <title>Company Details</title>
     </head>
     <body>
-        <h1></h1>
+        <h1><%=@company.name %></h1>
         <div>
             <%= link_to 'Edit Company', edit_company_path(@company) %>
             <p><%=@company.name %></p>

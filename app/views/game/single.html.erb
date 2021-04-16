@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Game Details</title>
+    </head>
+    <body>
+        <h1>Game Details</h1>
+        <div>
+            <%= link_to 'Edit Game', edit_game_path(@game) %>
+            <p><%=@game.name %></p>
+        </div>
+    </body>
+</html>

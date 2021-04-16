@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game Form</title>
+  </head>
+  <body>
+    <h1>Game Form</h1>
+    <% if(@game) %>
+        <%= form_with model: @game do |game| %>
+            <%= game.text_field :name %>
+            <%= game.submit %>
+        <% end %>
+    <% else %>
+        <%= form_with model: Game.new do |game| %>
+            <%= game.text_field :name %>
+            <%= game.submit %>
+        <% end %>
+    <% end %>
+  </body>
+</html>

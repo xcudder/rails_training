@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Book List</title>
+    </head>
+    <body>
+        <h1>Book List</h1>
+        <%= link_to 'Create Book', new_book_path %>
+        <% Book.all.each do |book|%><p>
+            <%= link_to book.name, book %>
+        </p><% end %>
+    </body>
+</html>
