@@ -1,25 +1,25 @@
 class BooksController < ApplicationController
     def index
         @books = Book.all
-        render "book/list"
+        render "book/list", layout: 'application'
     end
 
     def show
         @book = Book.find(params[:id])
-        render "book/single"
+        render "book/single", layout: 'application'
     end
 
     def edit
         @book = Book.find(params[:id])
         @companies = Company.all
         @categories = Category.all
-        render "book/form"
+        render "book/form", layout: 'application'
     end
 
     def new
         @companies = Company.all
         @categories = Category.all
-        render "book/form"
+        render "book/form", layout: 'application'
     end
 
     def create

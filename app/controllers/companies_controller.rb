@@ -1,21 +1,21 @@
 class CompaniesController < ApplicationController
     def index
         @companies = Company.includes(:games, :books).all
-        render "company/list"
+        render "company/list", layout: 'application'
     end
 
     def show
         @company = Company.find(params[:id])
-        render "company/single"
+        render "company/single", layout: 'application'
     end
 
     def edit
         @company = Company.find(params[:id])
-        render "company/form"
+        render "company/form", layout: 'application'
     end
 
     def new
-        render "company/form"
+        render "company/form", layout: 'application'
     end
 
     def create

@@ -8,6 +8,7 @@
         <%= link_to 'Create Book', new_book_path %>
         <% Book.all.each do |book|%><p>
             <%= link_to book.name, book %>
+            <%= link_to "Delete", book_path(book), method: :delete, data: { confirm: 'Are you certain you want to delete this?' } %>
         </p><% end %>
     </body>
 </html>

@@ -8,6 +8,7 @@
         <%= link_to 'Create Game', new_game_path %>
         <% Game.all.each do |game|%><p>
             <%= link_to game.name, game %>
+            <%= link_to "Delete", game_path(game), method: :delete, data: { confirm: 'Are you certain you want to delete this?' } %>
         </p><% end %>
     </body>
 </html>

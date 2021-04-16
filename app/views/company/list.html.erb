@@ -8,6 +8,7 @@
         <%= link_to 'Create Company', new_company_path %>
         <% Company.all.each do |company|%><p>
             <%= link_to company.name, company %>
+            <%= link_to "Delete", company_path(company), method: :delete, data: { confirm: 'Are you certain you want to delete this?' } %>
         </p><% end %>
     </body>
 </html>

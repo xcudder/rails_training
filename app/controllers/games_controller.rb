@@ -1,25 +1,25 @@
 class GamesController < ApplicationController
     def index
         @games = Game.all
-        render "game/list"
+        render "game/list", layout: 'application'
     end
 
     def show
         @game = Game.find(params[:id])
-        render "game/single"
+        render "game/single", layout: 'application'
     end
 
     def edit
         @game = Game.find(params[:id])
         @companies = Company.all
         @platforms = Platform.all
-        render "game/form"
+        render "game/form", layout: 'application'
     end
 
     def new
         @companies = Company.all
         @platforms = Platform.all
-        render "game/form"
+        render "game/form", layout: 'application'
     end
 
     def create
