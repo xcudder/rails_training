@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Company</title>
+    </head>
+    <body>
+        <h1></h1>
+        <%= link_to 'Create Company', new_company_path %>
+        <% Company.all.each do |company|%><p>
+            <%= link_to company.name, company %>
+        </p><% end %>
+    </body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Company</title>
+  </head>
+  <body>
+    <h1></h1>
+    <% if(@company) %>
+        <%= form_with model: @company do |form| %>
+            <%= form.text_field :name %>
+            <%= form.submit %>
+        <% end %>
+    <% else %>
+        <%= form_with model: Company.new do |form| %>
+            <%= form.text_field :name %>
+            <%= form.submit %>
+        <% end %>
+    <% end %>
+  </body>
+</html>

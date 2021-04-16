@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Company</title>
+    </head>
+    <body>
+        <h1></h1>
+        <div>
+            <%= link_to 'Edit Company', edit_company_path(@company) %>
+            <p><%=@company.name %></p>
+            <h2>Livros:</h2>
+            <ul>
+                <% @company.books.each do |book| %>
+                <li><%=book.name %></li>
+                <% end %>
+            </ul>
+            <h2>Jogos:</h2>
+            <ul>
+                <% @company.games.each do |game| %>
+                <li><%=game.name %></li>
+                <% end %>
+            </ul>
+        </div>
+    </body>
+</html>
