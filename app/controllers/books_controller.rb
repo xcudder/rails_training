@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
     def index
-        @books = Book.includes(:games, :books).all
+        @books = Book.all
         render "book/list"
     end
 
@@ -11,32 +11,37 @@ class BooksController < ApplicationController
 
     def edit
         @book = Book.find(params[:id])
+        @companies = Company.all
+        @categories = Category.all
         render "book/form"
     end
 
     def new
+        @companies = Company.all
+        @categories = Category.all
         render "book/form"
     end
 
     def create
         book = Book.new(book_params)
-        Book.save
+        book.save
         redirect_to book
     end
 
     def update
         book = Book.find(params[:id])
-        Book.update!(book_params)
+        book.update!(book_params)
         redirect_to book
     end
 
     def destroy
         book = Book.find(params[:id])
-        Book.destroy
-        redirect_to companies_path
+        book.destroy
+        redirect_to books_path
     end
 
     private def book_params
-        params.require(:book).permit(:name)
+        params.require(:book).require([:name, :price, :author, :category_id, :company_id])
+        params.require(:book).permit!
     end
 end

@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
     def index
-        @games = Game.includes(:games, :games).all
+        @games = Game.all
         render "game/list"
     end
 
@@ -11,32 +11,37 @@ class GamesController < ApplicationController
 
     def edit
         @game = Game.find(params[:id])
+        @companies = Company.all
+        @platforms = Platform.all
         render "game/form"
     end
 
     def new
+        @companies = Company.all
+        @platforms = Platform.all
         render "game/form"
     end
 
     def create
         game = Game.new(game_params)
-        Game.save
+        game.save
         redirect_to game
     end
 
     def update
         game = Game.find(params[:id])
-        Game.update!(game_params)
+        game.update!(game_params)
         redirect_to game
     end
 
     def destroy
         game = Game.find(params[:id])
-        Game.destroy
-        redirect_to companies_path
+        game.destroy
+        redirect_to games_path
     end
 
     private def game_params
-        params.require(:game).permit(:name)
+        params.require(:game).require([:name, :price, :platform_id, :company_id])
+        params.require(:game).permit!
     end
 end
