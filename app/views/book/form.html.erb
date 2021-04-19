@@ -5,16 +5,13 @@
   </head>
   <body>
     <h1>Book Form</h1>
-    <% if(@book) %>
-        <%= form_with model: @book do |form| %>
-            <%= form.text_field :name %>
-            <%= form.submit %>
-        <% end %>
-    <% else %>
-        <%= form_with model: Book.new do |form| %>
-            <%= form.text_field :name %>
-            <%= form.submit %>
-        <% end %>
+    <%= form_with model: @book do |book| %>
+        <%= book.text_field :name %>
+        <%= book.text_field :price %>
+        <%= book.text_area :description %>
+        <%= select(:book, :category_id, options_from_collection_for_select(@categories, :id, :name)) %>
+        <%= select(:book, :company_id, options_from_collection_for_select(@companies, :id, :name)) %>
+        <%= book.submit %>
     <% end %>
   </body>
 </html>

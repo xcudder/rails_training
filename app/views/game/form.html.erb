@@ -1,28 +1,17 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Game Form</title>
-  </head>
-  <body>
+</head>
+<body>
     <h1>Game Form</h1>
-    <% if(@game) %>
-        <%= form_with model: @game do |game| %>
-            <%= game.text_field :name %>
-            <%= game.text_field :price %>
-            <%= game.text_area :description %>
-            <%= select(:game, :platform_id, options_from_collection_for_select(@platforms, :id, :name)) %>
-            <%= select(:game, :company_id, options_from_collection_for_select(@companies, :id, :name)) %>
-            <%= game.submit %>
-        <% end %>
-    <% else %>
-        <%= form_with model: Game.new do |game| %>
-            <%= game.text_field :name %>
-            <%= game.text_field :price %>
-            <%= game.text_area :description %>
-            <%= select(:game, :platform_id, options_from_collection_for_select(@platforms, :id, :name)) %>
-            <%= select(:game, :company_id, options_from_collection_for_select(@companies, :id, :name)) %>
-            <%= game.submit %>
-        <% end %>
+    <%= form_with model: @game do |game| %>
+        <%= game.text_field :name %>
+        <%= game.text_field :price %>
+        <%= game.text_area :description %>
+        <%= select(:game, :platform_id, options_from_collection_for_select(@platforms, :id, :name)) %>
+        <%= select(:game, :company_id, options_from_collection_for_select(@companies, :id, :name)) %>
+        <%= game.submit %>
     <% end %>
-  </body>
+</body>
 </html>

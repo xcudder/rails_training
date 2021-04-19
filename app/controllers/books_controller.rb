@@ -17,6 +17,7 @@ class BooksController < ApplicationController
     end
 
     def new
+        @book = Book.new
         @companies = Company.all
         @categories = Category.all
         render "book/form", layout: 'application'

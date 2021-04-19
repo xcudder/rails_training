@@ -17,6 +17,7 @@ class GamesController < ApplicationController
     end
 
     def new
+        @game = Game.new
         @companies = Company.all
         @platforms = Platform.all
         render "game/form", layout: 'application'
@@ -25,7 +26,7 @@ class GamesController < ApplicationController
     def create
         game = Game.new(game_params)
         game.save
-        redirect_to game
+        redirect_to game, notice: "Success"
     end
 
     def update
