@@ -24,14 +24,17 @@ class BooksController < ApplicationController
     end
 
     def create
-        book = Book.new(book_params)
-        book.save
-        redirect_to book
+        book = Book.new(params.require(:book).permit!)
+        if !book.save
+            render :json => {:response => 'Saving entity failed' },:status => 401
+        else
+            redirect_to book
+        end
     end
 
     def update
         book = Book.find(params[:id])
-        book.update!(book_params)
+        book.update!(params.require(:book).permit!)
         redirect_to book
     end
 

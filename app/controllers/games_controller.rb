@@ -24,14 +24,17 @@ class GamesController < ApplicationController
     end
 
     def create
-        game = Game.new(game_params)
-        game.save
-        redirect_to game, notice: "Success"
+        game = Game.new(params.require(:game).permit!)
+        if !game.save
+            render :json => {:response => 'Saving entity failed' },:status => 401
+        else
+            redirect_to game
+        end
     end
 
     def update
         game = Game.find(params[:id])
-        game.update!(game_params)
+        game.update!(params.require(:game).permit!)
         redirect_to game
     end
 

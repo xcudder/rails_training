@@ -13,14 +13,13 @@ RSpec.describe 'book CRUD', type: :request  do
 
     describe 'POST create' do
         it 'creates a new book' do
-            post books_path, params: { book: { name: 'New book!', price: 12.5, author: 'Someone', category_id: @category.id, company_id: @company.id  }}
-            expect(Book.find_by(name: 'New book!')).to be_a Book
+            post books_path, params: { book: { name: 'Newest book!', price: 12.5, author: 'Someone', category_id: @category.id, company_id: @company.id  }}
+            expect(Book.find_by(name: 'Newest book!')).to be_a Book
         end
 
         it 'fails if there are missing arguments' do
-            expect{
-                post books_path, params: { book: { name: 'Nope book!'}}
-            }.to raise_exception(ActionController::ParameterMissing)
+            post books_path, params: { book: {name: "Lalala"}}
+            expect(response).to have_http_status(401)
         end
     end
 
@@ -37,6 +36,21 @@ RSpec.describe 'book CRUD', type: :request  do
                 }
             }
             expect(Book.find_by(name: 'Now updated')).to be_a Book
+        end
+
+        it 'fails if there are invalid arguments' do
+            book = Book.create(name: 'Soon to be updated', price: 12, author: 'Someone', category_id: @category.id, company_id: @company.id )
+            params = {
+                book: {
+                    name: 'Now updated',
+                    author: 'S',
+                    category_id: @category.id,
+                    company_id: @company.id
+                }
+            }
+            expect{
+                put book_path(book.id), params: params
+            }.to raise_exception(ActiveRecord::RecordInvalid)
         end
     end
 

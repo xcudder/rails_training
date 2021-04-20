@@ -18,9 +18,8 @@ RSpec.describe 'game CRUD', type: :request  do
         end
 
         it 'fails if there are missing arguments' do
-            expect{
-                post games_path, params: { game: { name: 'Nope game!'}}
-            }.to raise_exception(ActionController::ParameterMissing)
+            post games_path, params: { game: {name: "Lalala"}}
+            expect(response).to have_http_status(401)
         end
     end
 
@@ -36,6 +35,21 @@ RSpec.describe 'game CRUD', type: :request  do
                 }
             }
             expect(Game.find_by(name: 'Now updated')).to be_a Game
+        end
+
+        it 'fails if there are invalid arguments' do
+            game = Game.create(name: 'Soon to be updated', price: 12, platform_id: @platform.id, company_id: @company.id )
+
+            params = {
+                game: {
+                    name: 'Now updated',
+                    description: (1...200).to_a.to_s,
+                    platform_id: @platform.id,
+                    company_id: @company.id
+                }
+            }
+
+            expect{ put game_path(game.id), params: params }.to raise_exception(ActiveRecord::RecordInvalid)
         end
     end
 
