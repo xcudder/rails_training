@@ -32,6 +32,8 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'simplecov', require: false
+  gem "rubycritic", require: false
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
