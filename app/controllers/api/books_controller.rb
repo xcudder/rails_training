@@ -20,8 +20,13 @@ class Api::BooksController < ApplicationController
 
     def update
         book = Book.find(params[:id])
-        book.update!(params.require(:book).permit!)
-        render :json => {:response => { :book => book.to_json }},:status => 200
+        begin
+            book.update!(params.require(:book).permit!)
+        rescue ActiveRecord::RecordInvalid => e
+            render :json => {:response => {:errors => e.message }},:status => 400
+        else
+            render :json => {:response => { :book => book.to_json }},:status => 200
+        end
     end
 
     def destroy

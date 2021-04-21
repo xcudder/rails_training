@@ -47,13 +47,13 @@ RSpec.describe 'company CRUD', type: :request  do
             expect(JSON.parse(JSON.parse(response.body)['response']['company'] )['id']).to eq(company.id)
         end
 
-        # it 'fails if there are invalid arguments' do
-        #     company = Company.create(@valid_company_params)
-        #     headers = { 'ACCEPT' => 'application/json' }
-        #     expect{
-        #         put api_company_path(company.id), params: { company: {name: ''}}
-        #     }.to raise_exception(ActiveRecord::RecordInvalid)
-        # end
+        it 'fails if there are invalid arguments' do
+            company = Company.create(@valid_company_params)
+            headers = { 'ACCEPT' => 'application/json' }
+            put api_company_path(company.id), params: { company: {name: ''}}
+            expect(response).to have_http_status(400)
+            expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Name can't be blank, Name is too short (minimum is 3 characters)"})
+        end
     end
 
     describe 'DELETE destroy' do

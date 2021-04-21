@@ -50,13 +50,13 @@ RSpec.describe 'book CRUD', type: :request  do
             expect(JSON.parse(JSON.parse(response.body)['response']['book'] )['id']).to eq(book.id)
         end
 
-        # it 'fails if there are invalid arguments' do
-        #     book = Book.create(@valid_book_params)
-        #     headers = { 'ACCEPT' => 'application/json' }
-        #     expect{
-        #         put api_book_path(book.id), params: { book: {name: 'Now updated', author: 'S'}}
-        #     }.to raise_exception(ActiveRecord::RecordInvalid)
-        # end
+        it 'fails if there are invalid arguments' do
+            book = Book.create(@valid_book_params)
+            headers = { 'ACCEPT' => 'application/json' }
+            put api_book_path(book.id), params: { book: {name: 'Now updated', author: 'S'}}
+            expect(response).to have_http_status(400)
+            expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Author is too short (minimum is 3 characters)"})
+        end
     end
 
     describe 'DELETE destroy' do

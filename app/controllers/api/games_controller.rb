@@ -20,8 +20,13 @@ class Api::GamesController < ApplicationController
 
     def update
         game = Game.find(params[:id])
-        game.update!(params.require(:game).permit!)
-        render :json => {:response => { :game => game.to_json }},:status => 200
+        begin
+            game.update!(params.require(:game).permit!)
+        rescue ActiveRecord::RecordInvalid => e
+            render :json => {:response => {:errors => e.message }},:status => 400
+        else
+            render :json => {:response => { :game => game.to_json }},:status => 200
+        end
     end
 
     def destroy

@@ -50,13 +50,13 @@ RSpec.describe 'game CRUD', type: :request  do
             expect(JSON.parse(JSON.parse(response.body)['response']['game'] )['id']).to eq(game.id)
         end
 
-        # it 'fails if there are invalid arguments' do
-        #     game = Game.create(@valid_game_params)
-        #     headers = { 'ACCEPT' => 'application/json' }
-        #     expect{
-        #         put api_game_path(game.id), params: { game: {name: 'Now updated', description: 'a'}}
-        #     }.to raise_exception(ActiveRecord::RecordInvalid)
-        # end
+        it 'fails if there are invalid arguments' do
+            game = Game.create(@valid_game_params)
+            headers = { 'ACCEPT' => 'application/json' }
+            put api_game_path(game.id), params: { game: {description:(1...200).to_a.to_s}}
+            expect(response).to have_http_status(400)
+            expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Description is too long (maximum is 200 characters)"})
+        end
     end
 
     describe 'DELETE destroy' do

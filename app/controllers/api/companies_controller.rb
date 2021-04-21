@@ -20,8 +20,13 @@ class Api::CompaniesController < ApplicationController
 
     def update
         company = Company.find(params[:id])
-        company.update!(params.require(:company).permit!)
-        render :json => {:response => { :company => company.to_json }},:status => 200
+        begin
+            company.update!(params.require(:company).permit!)
+        rescue ActiveRecord::RecordInvalid => e
+            render :json => {:response => {:errors => e.message }},:status => 400
+        else
+            render :json => {:response => { :company => company.to_json }},:status => 200
+        end
     end
 
     def destroy
