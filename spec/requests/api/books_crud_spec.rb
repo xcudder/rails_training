@@ -16,14 +16,14 @@ RSpec.describe 'book CRUD', type: :request  do
         it 'creates a new book' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_books_path, params: {book: @valid_book_params}
-            expect(Book.find_by(name: 'Newest book!')).to be_a Book
+            expect(Book.find_by(name: @valid_book_params[:name])).to be_a Book
         end
 
         it 'returns the created book as json' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_books_path, params: {book: @valid_book_params}
             expect(response).to have_http_status(200)
-            expect( JSON.parse(response.body)['response']['book'] ).to eq(Book.find_by(name: 'Newest book!').to_json)
+            expect( JSON.parse(response.body)['response']['book'] ).to eq(Book.find_by(name: @valid_book_params[:name]).to_json)
         end
 
         it 'fails if there are missing arguments' do
@@ -71,11 +71,11 @@ RSpec.describe 'book CRUD', type: :request  do
 
     describe 'GET index' do
         it 'lists books' do
-            book1 = @valid_book_params
-            book1['name'] = 'book #1'
+            book1 = @valid_book_params.clone
+            book1[:name] = 'book #1'
 
-            book2 = @valid_book_params
-            book2['name'] = 'book #2'
+            book2 = @valid_book_params.clone
+            book2[:name] = 'book #2'
 
             Book.create([book1, book2])
 

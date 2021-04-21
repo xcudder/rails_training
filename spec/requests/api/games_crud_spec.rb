@@ -16,21 +16,21 @@ RSpec.describe 'game CRUD', type: :request  do
         it 'creates a new game' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_games_path, params: {game: @valid_game_params}
-            expect(Game.find_by(name: 'Newest game!')).to be_a Game
+            expect(Game.find_by(name: @valid_game_params[:name])).to be_a Game
         end
 
         it 'returns the created game as json' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_games_path, params: {game: @valid_game_params}
             expect(response).to have_http_status(200)
-            expect( JSON.parse(response.body)['response']['game'] ).to eq(Game.find_by(name: 'Newest game!').to_json)
+            expect( JSON.parse(response.body)['response']['game'] ).to eq(Game.find_by(name: @valid_game_params[:name]).to_json)
         end
 
         it 'fails if there are missing arguments' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_games_path, params: { game: {name: 'Lalala', description: 'a'}}
             expect(response).to have_http_status(400)
-            expect(response.body).to eq("{\"response\":{\"errors\":{\"company\":[\"must exist\"],\"platform\":[\"must exist\"]}}}")
+            expect(response.body).to eq("{\"response\":{\"errors\":{\"company\":[\"must exist\"],\"platform\":[\"must exist\"],\"price\":[\"can't be blank\"]}}}")
         end
     end
 
@@ -71,10 +71,10 @@ RSpec.describe 'game CRUD', type: :request  do
 
     describe 'GET index' do
         it 'lists games' do
-            game1 = @valid_game_params
+            game1 = @valid_game_params.clone
             game1['name'] = 'game #1'
 
-            game2 = @valid_game_params
+            game2 = @valid_game_params.clone
             game2['name'] = 'game #2'
 
             Game.create([game1, game2])

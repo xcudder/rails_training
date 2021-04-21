@@ -13,14 +13,14 @@ RSpec.describe 'company CRUD', type: :request  do
         it 'creates a new company' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_companies_path, params: {company: @valid_company_params}
-            expect(Company.find_by(name: 'Newest company!')).to be_a Company
+            expect(Company.find_by(name: @valid_company_params[:name])).to be_a Company
         end
 
         it 'returns the created company as json' do
             headers = { 'ACCEPT' => 'application/json' }
             post api_companies_path, params: {company: @valid_company_params}
             expect(response).to have_http_status(200)
-            expect( JSON.parse(response.body)['response']['company'] ).to eq(Company.find_by(name: 'Newest company!').to_json)
+            expect( JSON.parse(response.body)['response']['company'] ).to eq(Company.find_by(name: @valid_company_params[:name]).to_json)
         end
 
         it 'fails if there are missing arguments' do
@@ -68,11 +68,11 @@ RSpec.describe 'company CRUD', type: :request  do
 
     describe 'GET index' do
         it 'lists companies' do
-            company1 = @valid_company_params
-            company1['name'] = 'company #1'
+            company1 = @valid_company_params.clone
+            company1[:name] = 'company #1'
 
-            company2 = @valid_company_params
-            company2['name'] = 'company #2'
+            company2 = @valid_company_params.clone
+            company2[:name] = 'company #2'
 
             Company.create([company1, company2])
 

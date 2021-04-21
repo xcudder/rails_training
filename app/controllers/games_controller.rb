@@ -26,7 +26,7 @@ class GamesController < ApplicationController
     def create
         game = Game.new(params.require(:game).permit!)
         if !game.save
-            render :json => {:response => 'Saving entity failed' },:status => 401
+            raise ActiveRecord::RecordInvalid
         else
             redirect_to game
         end

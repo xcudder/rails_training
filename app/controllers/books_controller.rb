@@ -26,7 +26,7 @@ class BooksController < ApplicationController
     def create
         book = Book.new(params.require(:book).permit!)
         if !book.save
-            render :json => {:response => 'Saving entity failed' },:status => 401
+            raise ActiveRecord::RecordInvalid
         else
             redirect_to book
         end
@@ -42,10 +42,5 @@ class BooksController < ApplicationController
         book = Book.find(params[:id])
         book.destroy
         redirect_to books_path
-    end
-
-    private def book_params
-        params.require(:book).require([:name, :price, :author, :category_id, :company_id])
-        params.require(:book).permit!
     end
 end

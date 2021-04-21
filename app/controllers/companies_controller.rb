@@ -19,14 +19,17 @@ class CompaniesController < ApplicationController
     end
 
     def create
-        company = Company.new(company_params)
-        company.save
-        redirect_to company
+        company = Company.new(params.require(:company).permit!)
+        if !company.save
+            raise ActiveRecord::RecordInvalid
+        else
+            redirect_to company
+        end
     end
 
     def update
         company = Company.find(params[:id])
-        company.update!(company_params)
+        company.update!(params.require(:company).permit!)
         redirect_to company
     end
 
@@ -34,9 +37,5 @@ class CompaniesController < ApplicationController
         company = Company.find(params[:id])
         company.destroy
         redirect_to companies_path
-    end
-
-    private def company_params
-        params.require(:company).permit(:name)
     end
 end
