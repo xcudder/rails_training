@@ -5,18 +5,17 @@ RSpec.describe 'book request', type: :request  do
     let(:company) { Company.create(name: 'Book Test Company') }
     let(:category) { Category.create(name: 'Romance') }
     let(:book_name) { 'Newest book!' }
-
-    let(:params) do
+    let(:book) do
         {
-            book:{
-                name: book_name,
-                price: 12.5,
-                author: 'Someone',
-                category_id: category.id,
-                company_id: company.id
-            }
+            name: book_name,
+            price: 12.5,
+            author: 'Someone',
+            category_id: category.id,
+            company_id: company.id
         }
     end
+    let(:pre_existing_book){ Book.create(book) }
+    let(:params){{ book: book}}
 
     describe 'POST create' do
         subject { post api_books_path, params: params }
@@ -31,8 +30,7 @@ RSpec.describe 'book request', type: :request  do
             end
 
             it 'returns the created book as json' do
-                expect(response).to have_http_status(200)
-                is_expected.to eq(200)
+                is_expected.to eq(201)
                 expect(JSON.parse(response.body)['response']['book'] ).to eq(Book.find_by_name(book_name).to_json)
             end
         end
@@ -43,68 +41,67 @@ RSpec.describe 'book request', type: :request  do
             end
 
             it 'fails if there are missing arguments' do
-                expect(response).to have_http_status(400)
+                is_expected.to eq(400)
                 expect(response.body).to eq("{\"response\":{\"errors\":{\"company\":[\"must exist\"],\"category\":[\"must exist\"],\"author\":[\"is too short (minimum is 3 characters)\"],\"price\":[\"can't be blank\"]}}}")
             end
         end
     end
 
-    # describe 'PUT update' do
-    #     it 'updates a book' do
-    #         book = Book.create(@valid_book_params)
-    #         headers = { 'ACCEPT' => 'application/json' }
-    #         put api_book_path(book.id), params: {book: { name: 'Now updated'}}
-    #         expect(Book.find_by(name: 'Now updated')).to be_a Book
-    #     end
+    describe 'PUT update' do
+        subject { put api_book_path(pre_existing_book.id), params: params }
 
-    #     it 'returns the created resource' do
-    #         book = Book.create(@valid_book_params)
-    #         headers = { 'ACCEPT' => 'application/json' }
-    #         put api_book_path(book.id), params: {book: { name: 'Now updated'}}
-    #         expect(response).to have_http_status(200)
-    #         expect(JSON.parse(JSON.parse(response.body)['response']['book'] )['id']).to eq(book.id)
-    #     end
+        before do
+            subject
+        end
 
-    #     it 'fails if there are invalid arguments' do
-    #         book = Book.create(@valid_book_params)
-    #         headers = { 'ACCEPT' => 'application/json' }
-    #         put api_book_path(book.id), params: { book: {name: 'Now updated', author: 'S'}}
-    #         expect(response).to have_http_status(400)
-    #         expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Author is too short (minimum is 3 characters)"})
-    #     end
-    # end
+        context 'when book is successfully updated' do
+            let(:params) do
+                { book: { name: "Now updated" } }
+            end
 
-    # describe 'DELETE destroy' do
-    #     it 'deletes a book' do
-    #         book = Book.create(@valid_book_params)
-    #         expect(Book.find(book.id)).to be_a Book
-    #         delete api_book_path(book.id)
-    #         expect(response).to have_http_status(200)
-    #         expect{ Book.find(book.id) }.to raise_exception(ActiveRecord::RecordNotFound)
-    #     end
-    # end
+            it 'updates a book' do
+                is_expected.to eq(204)
+                expect(Book.find_by(name: 'Now updated')).to be_a Book
+            end
+        end
 
-    # describe 'GET index' do
-    #     it 'lists books' do
-    #         book1 = @valid_book_params.clone
-    #         book1[:name] = 'book #1'
+        context 'when book is not successfully updated' do
+            let(:params) do
+                { book: { name: "Now updated", author: "S" } }
+            end
 
-    #         book2 = @valid_book_params.clone
-    #         book2[:name] = 'book #2'
+            it 'fails if there are invalid arguments' do
+                 is_expected.to eq(400)
+                expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Author is too short (minimum is 3 characters)"})
+            end
+        end
+    end
 
-    #         Book.create([book1, book2])
+    describe 'DELETE destroy' do
+        subject { delete api_book_path(pre_existing_book.id) }
 
-    #         headers = { 'ACCEPT' => 'application/json' }
-    #         get api_books_path
-    #         expect(JSON.parse(response.body)['response']['books']).to eq(Book.all.to_json)
-    #     end
-    # end
+        it 'deletes a book' do
+            subject
+            is_expected.to eq(200)
+            expect{ Book.find(pre_existing_book.id) }.to raise_exception(ActiveRecord::RecordNotFound)
+        end
+    end
 
-    # describe 'GET show' do
-    #     it 'displays a single book' do
-    #         book = Book.create(@valid_book_params)
-    #         get api_book_path(book.id)
-    #         expect(JSON.parse(response.body)['response']['book']).to eq(book.to_json)
-    #     end
-    # end
+    describe 'GET index' do
+        subject { get api_books_path }
+
+        it 'lists books' do
+            subject
+            expect(JSON.parse(response.body)['response']['books']).to eq(Book.all.to_json)
+        end
+    end
+
+    describe 'GET show' do
+        subject {  get api_book_path(pre_existing_book.id) }
+
+        it 'displays a single book' do
+            subject
+            expect(JSON.parse(response.body)['response']['book']).to eq(pre_existing_book.to_json)
+        end
+    end
 end

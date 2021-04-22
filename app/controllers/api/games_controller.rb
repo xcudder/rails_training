@@ -14,7 +14,7 @@ class Api::GamesController < ApplicationController
         if !game.save
             render :json => {:response => {:errors => game.errors }},:status => 400
         else
-            render :json => {:response => { :game => game.to_json }},:status => 200
+            render :json => {:response => { :game => game.to_json }},:status => 201
         end
     end
 
@@ -25,7 +25,7 @@ class Api::GamesController < ApplicationController
         rescue ActiveRecord::RecordInvalid => e
             render :json => {:response => {:errors => e.message }},:status => 400
         else
-            render :json => {:response => { :game => game.to_json }},:status => 200
+            head :no_content
         end
     end
 
