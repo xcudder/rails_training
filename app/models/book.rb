@@ -6,4 +6,5 @@ class Book < ApplicationRecord
     validates :author, length: { in: 3..30 }
     validates :description, length: { maximum: 200 }
     validates :price, presence: true
+    validates :name, presence: true, length: { minimum: 3 }
 end
