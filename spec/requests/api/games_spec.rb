@@ -70,7 +70,6 @@ RSpec.describe 'game request', type: :request  do
             end
 
             it 'fails if there are invalid arguments' do
-                # is_expected.to eq(400)
                 expect(JSON.parse(response.body)).to eq("response" => {"errors"=>"Validation failed: Price can't be blank"})
             end
         end
@@ -89,18 +88,26 @@ RSpec.describe 'game request', type: :request  do
     describe 'GET index' do
         subject { get api_games_path }
 
-        it 'lists games' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/games/list')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['games']).to eq(Game.all.to_json)
+            expect(response.body).to include(Game.all.to_json)
         end
     end
 
     describe 'GET show' do
         subject {  get api_game_path(pre_existing_game.id) }
 
-        it 'displays a single game' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/games/show')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['game']).to eq(pre_existing_game.to_json)
+            expect(response.body).to include(Game.find(pre_existing_game.id).to_json)
         end
     end
 end

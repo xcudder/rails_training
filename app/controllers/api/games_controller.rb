@@ -1,12 +1,12 @@
 class Api::GamesController < ApplicationController
     def index
         @games = Game.all
-        render :json => {:response => { :games => @games.to_json }},:status => 200
+        render "api/games/list"
     end
 
     def show
         @game = Game.find(params[:id])
-        render :json => {:response => { :game => @game.to_json }},:status => 200
+        render "api/games/show"
     end
 
     def create

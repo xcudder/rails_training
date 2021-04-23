@@ -79,18 +79,26 @@ RSpec.describe 'company request', type: :request  do
     describe 'GET index' do
         subject { get api_companies_path }
 
-        it 'lists companies' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/companies/list')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['companies']).to eq(Company.all.to_json)
+            expect(response.body).to include(Company.all.to_json)
         end
     end
 
     describe 'GET show' do
         subject {  get api_company_path(pre_existing_company.id) }
 
-        it 'displays a single company' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/companies/show')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['company']).to eq(pre_existing_company.to_json)
+            expect(response.body).to include(Company.find(pre_existing_company.id).to_json)
         end
     end
 end

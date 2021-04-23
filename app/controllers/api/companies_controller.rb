@@ -1,12 +1,12 @@
 class Api::CompaniesController < ApplicationController
     def index
         @companies = Company.all
-        render :json => {:response => { :companies => @companies.to_json }},:status => 200
+        render "api/companies/list"
     end
 
     def show
         @company = Company.find(params[:id])
-        render :json => {:response => { :company => @company.to_json }},:status => 200
+        render "api/companies/show"
     end
 
     def create

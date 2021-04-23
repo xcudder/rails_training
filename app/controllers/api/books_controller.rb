@@ -1,12 +1,12 @@
 class Api::BooksController < ApplicationController
     def index
         @books = Book.all
-        render :json => {:response => { :books => @books.to_json }},:status => 200
+        render "api/books/list"
     end
 
     def show
         @book = Book.find(params[:id])
-        render :json => {:response => { :book => @book.to_json }},:status => 200
+        render "api/books/show"
     end
 
     def create

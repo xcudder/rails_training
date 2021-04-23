@@ -90,18 +90,26 @@ RSpec.describe 'book request', type: :request  do
     describe 'GET index' do
         subject { get api_books_path }
 
-        it 'lists books' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/books/list')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['books']).to eq(Book.all.to_json)
+            expect(response.body).to include(Book.all.to_json)
         end
     end
 
     describe 'GET show' do
         subject {  get api_book_path(pre_existing_book.id) }
 
-        it 'displays a single book' do
+        it 'renders the correct view' do
+            expect(subject).to render_template('api/books/show')
+        end
+
+        it 'loads the proper data' do
             subject
-            expect(JSON.parse(response.body)['response']['book']).to eq(pre_existing_book.to_json)
+            expect(response.body).to include(Book.find(pre_existing_book.id).to_json)
         end
     end
 end
