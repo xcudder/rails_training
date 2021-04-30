@@ -1,0 +1,1 @@
+json.array! @tag_types, :id, :name

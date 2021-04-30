@@ -69,3 +69,22 @@ companies[3].books.create([
         category: categories[1]
     }
 ])
+
+#Employees
+employees = Employee.create [{name:'Jack'},{name:'James'},{name:'John'}]
+
+project_tags = Tag.create [{name:'Large Project', tag_type_id: 1},{name:'Medium Project', tag_type_id: 1},{name:'Small Project', tag_type_id: 1}]
+country_tags = Tag.create [{name:'Brazil', tag_type_id: 2},{name:'Spain', tag_type_id: 2},{name:'Japan', tag_type_id: 2}]
+role_tags    = Tag.create [{name:'Developer', tag_type_id: 3},{name:'Manager', tag_type_id: 3},{name:'Designer', tag_type_id: 3}]
+
+employees[0].tags << project_tags[0]
+employees[0].tags << project_tags[0]
+employees[0].tags << project_tags[0]
+
+employees[1].tags << project_tags[1]
+employees[1].tags << project_tags[1]
+employees[1].tags << project_tags[1]
+
+employees[2].tags << project_tags[2]
+employees[2].tags << project_tags[2]
+employees[2].tags << project_tags[2]

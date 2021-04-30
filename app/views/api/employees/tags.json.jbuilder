@@ -1,0 +1,1 @@
+json.array!(@employee.tags, :id, :name)

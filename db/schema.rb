@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_000005) do
+ActiveRecord::Schema.define(version: 2021_04_26_000005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,10 +33,29 @@ ActiveRecord::Schema.define(version: 2021_04_08_000005) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "clients", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "employees_tags", id: false, force: :cascade do |t|
+    t.bigint "employee_id", null: false
+    t.bigint "tag_id", null: false
+    t.index ["employee_id"], name: "index_employees_tags_on_employee_id"
+    t.index ["tag_id"], name: "index_employees_tags_on_tag_id"
   end
 
   create_table "games", force: :cascade do |t|
@@ -55,8 +74,22 @@ ActiveRecord::Schema.define(version: 2021_04_08_000005) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tag_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.integer "tag_type_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "books", "categories"
   add_foreign_key "books", "companies"
   add_foreign_key "games", "companies"
   add_foreign_key "games", "platforms"
+  add_foreign_key "tags", "tag_types"
 end
